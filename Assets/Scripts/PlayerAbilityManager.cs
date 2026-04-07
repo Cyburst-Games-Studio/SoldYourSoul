@@ -24,8 +24,17 @@ public class PlayerAbilityManager : MonoBehaviour
         {
             if (abilityList[i].name == string.Empty)
             {
+                // add the ability to the list
                 abilityList[i].Set(ab);
                 UpdateAbilityDisplay(i);
+
+                // check if the current upgrade is a weapon object, then instantiate it from resources
+                if (abilityList[i].attribute == 'm' || abilityList[i].attribute == 'r')
+                {
+                    GameObject weapon = Resources.Load<GameObject>("Weapons/" + abilityList[i].name);
+                    Instantiate(weapon, transform.position, Quaternion.identity, transform);
+                }
+
                 return 0;
             }
         }
@@ -36,6 +45,13 @@ public class PlayerAbilityManager : MonoBehaviour
     {
         if (inPrompt)
         {
+            // check if the current upgrade is a weapon, then remove it 
+            if(abilityList[slot].attribute == 'm' || abilityList[slot].attribute == 'r')
+            {
+                Destroy(transform.Find(abilityList[slot].name+"(Clone)").gameObject);
+            }
+
+            // clear out the slot
             abilityList[slot].Clear();
             inPrompt = false;
         }

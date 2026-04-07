@@ -22,6 +22,8 @@ public class ShopHandler : MonoBehaviour
     {
         activeChoice = -1;
 
+        gameObject.GetComponentInChildren<Canvas>().worldCamera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
+
         // initialize the ability list for sale
         for (int i = 0; i < abilitiesForSale.Length; i++)
         {

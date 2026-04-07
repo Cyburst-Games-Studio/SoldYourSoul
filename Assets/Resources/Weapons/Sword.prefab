@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2408638307400574262}
   - component: {fileID: 5588140779317213304}
   - component: {fileID: 3650255417321305920}
-  - component: {fileID: 7814456499723997579}
+  - component: {fileID: 7973951120261379291}
   m_Layer: 0
   m_Name: Sword
   m_TagString: PlayerDamage
@@ -131,7 +131,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 2}
   m_Direction: 0
---- !u!114 &7814456499723997579
+--- !u!114 &7973951120261379291
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -140,12 +140,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 3058727209518260287}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76b1ea2cabc075b41a437fab6ff2e59a, type: 3}
+  m_Script: {fileID: 11500000, guid: 6c4ee7fa7ecb0704993253372eaf2668, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MeleeWeaponBehavior
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerWeaponBehavior
   maxHoverDistance: 1.2
+  worldOffset: {x: 0, y: 0, z: 0}
+  forwardRotOffset: 30
   weaponDamage: 8
   weaponCooldown: 1.4
+  anim: {fileID: 0}
+  ranged: 0
+  projectile: {fileID: 0}
 --- !u!1 &6130467345965863430
 GameObject:
   m_ObjectHideFlags: 0
