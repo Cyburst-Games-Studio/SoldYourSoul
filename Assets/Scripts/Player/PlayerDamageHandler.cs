@@ -22,6 +22,20 @@ public class PlayerDamageHandler : MonoBehaviour
         playerHealth = hp;
     }
 
+
+    // recovers the player's health by a set amount
+    public void AddHealth(int amount, bool enemyDefeat)
+    {
+        if (enemyDefeat)
+        {
+            // increase the player's health, accounting for the VAMPIRIC VITALITY upgrade, which increases health gained
+            playerHealth += PlayerMaster.PM.playerAb.HasAbility("Vampiric Vitality") ? Mathf.CeilToInt(amount * 1.2f) : amount;
+            return;
+        }
+
+        playerHealth += amount;
+    }
+
     // Handle collisions with enemies
     private void OnCollisionStay2D(Collision2D collision)
     {

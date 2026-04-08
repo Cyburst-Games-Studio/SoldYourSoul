@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4740868619491007712}
   - component: {fileID: 8471569698519284787}
+  - component: {fileID: 2885703241294670092}
   m_Layer: 0
   m_Name: Bolt
   m_TagString: Untagged
@@ -91,3 +92,23 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &2885703241294670092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 620171607260016599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c4ee7fa7ecb0704993253372eaf2668, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerWeaponBehavior
+  maxHoverDistance: 0.8
+  worldOffset: {x: 0, y: 0, z: 0}
+  forwardRotOffset: 0
+  weaponDamage: 6
+  weaponCooldown: 1.6
+  anim: {fileID: 0}
+  ranged: 1
+  projectile: {fileID: 0}

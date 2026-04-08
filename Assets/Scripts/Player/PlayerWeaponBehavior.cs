@@ -21,7 +21,7 @@ public class PlayerWeaponBehavior : MonoBehaviour
     private bool onCooldown;
 
     // handles ranged weapons, can leave blank in inspector for melee weapons
-    [SerializeField] private bool ranged;
+    public bool ranged;
     public GameObject projectile;
 
     private void Start()
@@ -108,6 +108,13 @@ public class PlayerWeaponBehavior : MonoBehaviour
 
     IEnumerator Cooldown()
     {
+        // check for ranged weapon and for the QUICK SHOTS upgrade to reduce the length of the cooldown
+        if (ranged && PlayerMaster.PM.playerAb.HasAbility("Quick Shots"))
+        {
+            yield return new WaitForSeconds(weaponCooldown * 0.75f);
+            onCooldown = false;
+            yield break;
+        }
         yield return new WaitForSeconds(weaponCooldown);
         onCooldown = false;
     }
