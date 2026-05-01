@@ -1,0 +1,184 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7398515793627843763
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2078604026598236898}
+  - component: {fileID: 7660318215851296954}
+  m_Layer: 0
+  m_Name: GameMaster
+  m_TagString: GameController
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2078604026598236898
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7398515793627843763}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7660318215851296954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7398515793627843763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7fa376c725a93642abcedda74595fa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameMasterHandler
+  difficulty: 3
+  playerAbilities:
+  - name: Punch
+    description: A simple punch attack to deal damage to enemies.
+    attribute: 109
+    rarity: -1
+    cost: 0
+    icon: {fileID: 21300000, guid: a7e64e121d3377347a3253ef78ddd3cc, type: 3}
+  - name: Double Jump
+    description: Jump again in the air.
+    attribute: 112
+    rarity: 25
+    cost: 8
+    icon: {fileID: 21300000, guid: 76295243b95fd6f4189089d0a1283e1f, type: 3}
+  - name: High Jump
+    description: Jump much higher than usual.
+    attribute: 112
+    rarity: 22
+    cost: 5
+    icon: {fileID: 21300000, guid: 76295243b95fd6f4189089d0a1283e1f, type: 3}
+  - name: Speedrunner
+    description: Move much faster than usual.
+    attribute: 112
+    rarity: 19
+    cost: 8
+    icon: {fileID: 21300000, guid: 76295243b95fd6f4189089d0a1283e1f, type: 3}
+  - name: Dash
+    description: Double tap a direction to gain a burst of speed, damaging enemies
+      in your path.
+    attribute: 97
+    rarity: 16
+    cost: 7
+    icon: {fileID: 21300000, guid: 76295243b95fd6f4189089d0a1283e1f, type: 3}
+  - name: Sword
+    description: Wield a demon slaying sword with a wide swing.
+    attribute: 109
+    rarity: 15
+    cost: 10
+    icon: {fileID: 21300000, guid: 76295243b95fd6f4189089d0a1283e1f, type: 3}
+  - name: DeathScythe
+    description: Deal good damage with a sweeping scythe.
+    attribute: 109
+    rarity: 12
+    cost: 12
+    icon: {fileID: 21300000, guid: 76295243b95fd6f4189089d0a1283e1f, type: 3}
+  - name: Spear
+    description: Skewer enemies with a long spear.
+    attribute: 109
+    rarity: 15
+    cost: 14
+    icon: {fileID: 21300000, guid: 76295243b95fd6f4189089d0a1283e1f, type: 3}
+  - name: Force
+    description: A stronger varient of Punch. Unleash a wave of enery with high knockback.
+    attribute: 109
+    rarity: 12
+    cost: 12
+    icon: {fileID: 21300000, guid: 76295243b95fd6f4189089d0a1283e1f, type: 3}
+  - name: Strength
+    description: Increases the damage done by melee weapons.
+    attribute: 112
+    rarity: 17
+    cost: 12
+    icon: {fileID: 21300000, guid: 76295243b95fd6f4189089d0a1283e1f, type: 3}
+  - name: Bolt
+    description: Fires bolts of energy to deal damage at range.
+    attribute: 114
+    rarity: 18
+    cost: 13
+    icon: {fileID: 21300000, guid: 76295243b95fd6f4189089d0a1283e1f, type: 3}
+  - name: Seeker
+    description: Shoot a low power shot that homes in on close enemies.
+    attribute: 114
+    rarity: 10
+    cost: 9
+    icon: {fileID: 21300000, guid: 76295243b95fd6f4189089d0a1283e1f, type: 3}
+  - name: Bomber
+    description: Fire an energy blast that detonates on impact, dealing high damage
+      to everything in the surrounding area, including you.
+    attribute: 114
+    rarity: 14
+    cost: 13
+    icon: {fileID: 21300000, guid: 76295243b95fd6f4189089d0a1283e1f, type: 3}
+  - name: Spew
+    description: A quick firing ranged weapon with low damage and knockback.
+    attribute: 114
+    rarity: 15
+    cost: 9
+    icon: {fileID: 21300000, guid: 76295243b95fd6f4189089d0a1283e1f, type: 3}
+  - name: Beam
+    description: Unleash a devestating beam of light that deals heavy damage to enemies
+      even through walls.
+    attribute: 114
+    rarity: 8
+    cost: 25
+    icon: {fileID: 21300000, guid: 76295243b95fd6f4189089d0a1283e1f, type: 3}
+  - name: Quick Shots
+    description: Boosts the fire rate of all ranged spells.
+    attribute: 112
+    rarity: 13
+    cost: 14
+    icon: {fileID: 21300000, guid: 76295243b95fd6f4189089d0a1283e1f, type: 3}
+  - name: Vampiric Vitality
+    description: Gain more life when defeating enemies.
+    attribute: 112
+    rarity: 9
+    cost: 16
+    icon: {fileID: 21300000, guid: 76295243b95fd6f4189089d0a1283e1f, type: 3}
+  - name: Armor
+    description: A defense buff that reduces incoming damage.
+    attribute: 112
+    rarity: 14
+    cost: 14
+    icon: {fileID: 21300000, guid: 76295243b95fd6f4189089d0a1283e1f, type: 3}
+  - name: Undying Will
+    description: Revives you from the dead once.
+    attribute: 112
+    rarity: 4
+    cost: 10
+    icon: {fileID: 21300000, guid: 76295243b95fd6f4189089d0a1283e1f, type: 3}
+  - name: Blip
+    description: Teleport forward slightly in the direction of your cursor, phasing
+      through enemies and certain obstacles.
+    attribute: 97
+    rarity: 11
+    cost: 16
+    icon: {fileID: 21300000, guid: 76295243b95fd6f4189089d0a1283e1f, type: 3}
+  - name: Clairvoyance
+    description: Gain a minimap to get a better view of the level and nearby enemies.
+    attribute: 112
+    rarity: 9
+    cost: 11
+    icon: {fileID: 21300000, guid: 76295243b95fd6f4189089d0a1283e1f, type: 3}
+  - name: Evade
+    description: When taking damage, you may instead evade the incoming attack.
+    attribute: 112
+    rarity: 16
+    cost: 11
+    icon: {fileID: 21300000, guid: 76295243b95fd6f4189089d0a1283e1f, type: 3}
