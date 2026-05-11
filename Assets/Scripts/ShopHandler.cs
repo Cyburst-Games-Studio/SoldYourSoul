@@ -5,15 +5,23 @@ using System.Collections;
 
 public class ShopHandler : MonoBehaviour
 {
+    //[HideInInspector]
     public PlayerAbility[] abilitiesForSale = new PlayerAbility[4];
 
+    [Header("UI Information")]
     [SerializeField] private TMP_Text[] shopNameText;
     [SerializeField] private TMP_Text[] shopCostText;
-
-    [SerializeField] private Image shopInfoIcon;
-    [SerializeField] private TMP_Text shopInfoName;
-    [SerializeField] private TMP_Text shopInfoText;
+    [SerializeField] private Image      shopInfoIcon;
+    [SerializeField] private TMP_Text   shopInfoName;
+    [SerializeField] private TMP_Text   shopInfoText;
     [SerializeField] private GameObject shopCanvas;
+
+    [Header("Static Shops")]
+    [Tooltip("Setting this overrides standard generation, allowing for specific upgrades to be placed in this shop"), SerializeField] 
+    private bool StaticShop;
+
+    [Tooltip("Use the name of any abilities you want to spawn in this shop."), SerializeField]
+    private string[] StaticAbilities;
 
     int activeChoice = -1;
 
@@ -24,37 +32,51 @@ public class ShopHandler : MonoBehaviour
 
         gameObject.GetComponentInChildren<Canvas>().worldCamera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
 
-        // initialize the ability list for sale
-        for (int i = 0; i < abilitiesForSale.Length; i++)
+        if (!StaticShop)
         {
-            bool selected = false;
-            while (!selected)
+            // initialize the ability list for sale
+            for (int i = 0; i < abilitiesForSale.Length; i++)
             {
-                abilitiesForSale[i].Set(GameMasterHandler.gm.playerAbilities[Random.Range(1, GameMasterHandler.gm.playerAbilities.Length)]);
-
-                // roll to keep the ability
-                if (abilitiesForSale[i].rarity > Random.Range(0, 26))
+                bool selected = false;
+                while (!selected)
                 {
-                    selected = true;
-                }
+                    int randAb = Random.Range(0, GameMasterHandler.gm.playerAbilities.Count);
 
-                // check other slots for duplicate entries
-                for(int j = 0; j < abilitiesForSale.Length; j++)
-                {
-                    if (j != i && abilitiesForSale[j].name.Equals(abilitiesForSale[i].name))
+                    abilitiesForSale[i].Set(GameMasterHandler.gm.playerAbilities[randAb]);
+
+                    // roll to keep the ability
+                    if (abilitiesForSale[i].rarity > Random.Range(0, 26))
                     {
-                        selected = false;
-                        break;
+                        selected = true;
+                    }
+
+                    // check other slots for duplicate entries
+                    for (int j = 0; j < abilitiesForSale.Length; j++)
+                    {
+                        if (j != i && abilitiesForSale[j].abilityName.Equals(abilitiesForSale[i].abilityName))
+                        {
+                            selected = false;
+                            break;
+                        }
                     }
                 }
             }
         }
+        // sets the shop according to editor input if the shop is set to static
+        else
+        {
+            for (int i = 0; i < StaticAbilities.Length; i++)
+            {
+                abilitiesForSale[i].Set(GameMasterHandler.gm.FindAbilityByName(StaticAbilities[i]));
+            }
+        }
+
         // assign the buttons for each shop ability
         for (int i = 0; i < shopNameText.Length; i++)
         {
             try 
             {  
-                shopNameText[i].text = abilitiesForSale[i].name; 
+                shopNameText[i].text = abilitiesForSale[i].abilityName; 
                 shopCostText[i].text = abilitiesForSale[i].cost.ToString();
             }
             catch { }  
@@ -69,7 +91,7 @@ public class ShopHandler : MonoBehaviour
         activeChoice = index;
         shopInfoIcon.sprite = abilitiesForSale[index].icon;
         shopInfoIcon.color = Color.white;
-        shopInfoName.text = abilitiesForSale[index].name;
+        shopInfoName.text = abilitiesForSale[index].abilityName;
         shopInfoText.text = abilitiesForSale[index].description;
     }
 
@@ -98,7 +120,7 @@ public class ShopHandler : MonoBehaviour
         // check if the player already has this upgrade
         for (int i = 0; i < PlayerMaster.PM.playerAb.abilityList.Length; i++)
         {
-            if (PlayerMaster.PM.playerAb.abilityList[i].name.Equals(abilitiesForSale[activeChoice].name))
+            if (PlayerMaster.PM.playerAb.abilityList[i].abilityName.Equals(abilitiesForSale[activeChoice].abilityName))
             {
                 shopInfoText.text = "You already own this.";
                 yield break;

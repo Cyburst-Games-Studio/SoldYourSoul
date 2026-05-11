@@ -63,6 +63,32 @@ public class PlayerDamageHandler : MonoBehaviour
         }
     }
 
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag.Equals("Enemy"))
+        {
+            if (!invincible)
+            {
+                int amount = GameMasterHandler.gm.difficulty;
+                invincible = true;
+
+                if (PlayerMaster.PM.playerAb.HasAbility("Armor"))
+                {
+                    amount--;
+                    if (amount < 0) amount = 0;
+                }
+
+                playerHealth -= amount;
+
+
+                PlayerMaster.PM.playerMh.Knockback(GameMasterHandler.gm.difficulty);
+                DeathProcedure();
+                UpdateHealthUI();
+                Invoke("UnInvincible", 2.0f);
+            }
+        }
+    }
+
     public void UpdateHealthUI()
     {
         healthText.text = playerHealth.ToString();
@@ -75,12 +101,22 @@ public class PlayerDamageHandler : MonoBehaviour
 
     void OnMelee()
     {
-        Debug.Log("Melee");
+        PlayerWeaponBehavior[] weapons = GetComponentsInChildren<PlayerWeaponBehavior>(true);
+
+        foreach (PlayerWeaponBehavior pwb in weapons)
+        {
+            StartCoroutine(pwb.OnAttack(true));
+        }
     }
 
     void OnRanged()
     {
-        Debug.Log("Ranged");
+        PlayerWeaponBehavior[] weapons = GetComponentsInChildren<PlayerWeaponBehavior>(true);
+
+        foreach (PlayerWeaponBehavior pwb in weapons)
+        {
+            StartCoroutine(pwb.OnAttack(false));
+        }
     }
 
     void DeathProcedure()
@@ -89,7 +125,7 @@ public class PlayerDamageHandler : MonoBehaviour
         {
             if(PlayerMaster.PM.playerAb.HasAbility("Undying Will")){
                 SetHealth(GameMasterHandler.gm.difficulty + 1);
-                int i = PlayerMaster.PM.playerAb.FindAbility("Undying Will");
+                int i = PlayerMaster.PM.playerAb.FindAbilityByName("Undying Will");
                 PlayerMaster.PM.playerAb.DestroyAbility(i);
                 PlayerMaster.PM.playerAb.UpdateAbilityDisplay(i);
             }

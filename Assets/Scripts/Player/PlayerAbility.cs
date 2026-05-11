@@ -3,7 +3,7 @@ using UnityEngine;
 [System.Serializable]
 public class PlayerAbility
 {
-    public string name;         // the name used in menus
+    public string abilityName;         // the name used in menus
     public string description;  // short description used in menus
     public char attribute;      // the type of ability it is (m=melee;r=ranged;p=passive;a=active)
     public short rarity;       // controls how rare the ability is in shops. The higer the number, the more common. caps at 25
@@ -12,7 +12,7 @@ public class PlayerAbility
 
     public PlayerAbility()
     {
-        name = string.Empty;
+        abilityName = string.Empty;
         description = string.Empty;
         attribute = char.MinValue;
         rarity = -1;
@@ -23,7 +23,7 @@ public class PlayerAbility
     // returns true is a desired ability is present
     public bool IsAbility(string nm)
     {
-        return name.Equals(nm);
+        return abilityName.Equals(nm);
     }
 
     // returns the type of ability
@@ -34,7 +34,7 @@ public class PlayerAbility
 
     public void Set(PlayerAbility ab)
     {
-        name = ab.name;
+        abilityName = ab.abilityName;
         description = ab.description;
         attribute = ab.attribute;
         rarity = ab.rarity;
@@ -44,7 +44,7 @@ public class PlayerAbility
 
     public void Clear()
     {
-        name = string.Empty;
+        abilityName = string.Empty;
         description = string.Empty;
         attribute = char.MinValue;
         rarity = -1;

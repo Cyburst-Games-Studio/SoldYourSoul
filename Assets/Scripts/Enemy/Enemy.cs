@@ -30,39 +30,38 @@ public class Enemy : MonoBehaviour
     // lowers the health of this enemy by that of the object dealing damage
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "PlayerDamage")
+        // a set of early returns
+        // if the collided object is not the player, leave early
+        if (collision.tag != "PlayerDamage") return;
+        // if the enemy cannot be damaged, leave early
+        if (!canDamage) return;
+
+        // at this point, the collided target is a player damage source and this object is subject to take damage
+        int damage = 0;
+        // get the reference of the opposing object's Weapon/Projectile script
+        if (collision.TryGetComponent<PlayerWeaponBehavior>(out PlayerWeaponBehavior weapon))
         {
-            if (canDamage)
+            damage = weapon.weaponDamage;
+            // check if the weapon is a melee weapon to apply the effect of Strength upgrade
+            if (!weapon.ranged && PlayerMaster.PM.playerAb.HasAbility("Strength"))
             {
-                // get the reference of the opposing object's Weapon script
-                try
-                {
-                    PlayerWeaponBehavior weapon = collision.GetComponent<PlayerWeaponBehavior>();
-                    int damage = weapon.weaponDamage;
-
-                    // check if the weapon is a melee weapon to apply the effect of Strength upgrade
-                    if (!weapon.ranged && PlayerMaster.PM.playerAb.HasAbility("Strength"))
-                    {
-                        damage = Mathf.RoundToInt(damage * 1.2f);
-                    }
-
-                    // apply damage to the enemy
-                    enemyHealth -= damage;
-                    canDamage = false;
-                    DeathProcedure();
-
-                    // apply iFrames
-                    if (enemyHealth > 0)
-                    {
-                        StartCoroutine(ApplyIFrames(damage * iFrameScale));
-                    }
-                }
-                catch
-                {
-                    Debug.Log("cannot deal damage due to an error");
-                    canDamage = true;
-                }
+                damage = Mathf.RoundToInt(damage * 1.2f);
             }
+        }
+        else
+        {
+            damage = collision.GetComponent<WeaponProjectileBehavior>().damage;
+        }
+
+        // apply damage to the enemy
+        enemyHealth -= damage;
+        canDamage = false;
+        DeathProcedure();
+
+        //// apply iFrames
+        if (enemyHealth > 0)
+        {
+            StartCoroutine(ApplyIFrames(damage * iFrameScale));
         }
     }
 

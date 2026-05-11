@@ -9,8 +9,7 @@ public class PlayerWeaponBehavior : MonoBehaviour
 
     // Parameters for how the weapon object interacts with the world around the player
     [Header("Player Interaction")]
-    [SerializeField] private float maxHoverDistance = 1.2f;
-    [SerializeField] private Vector3 worldOffset;
+    [SerializeField] private float hoverDistance = 1.2f;
     [SerializeField] private float forwardRotOffset;
 
     // Weapon stats
@@ -19,6 +18,7 @@ public class PlayerWeaponBehavior : MonoBehaviour
     public float weaponCooldown;
     public Animation anim;
     private bool onCooldown;
+    private bool isAttacking;
 
     // handles ranged weapons, can leave blank in inspector for melee weapons
     public bool ranged;
@@ -29,79 +29,105 @@ public class PlayerWeaponBehavior : MonoBehaviour
         player = GameObject.FindWithTag("Player").transform;
         cam = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
         onCooldown = false;
+        isAttacking = false;
+
+        if (ranged) gameObject.SetActive(false);
     }
 
     void Update()
     {
-        // get mouse position
-        Vector3 mousePos = cam.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-        mousePos.z = 0f;
-
-        // move but clamp to stay near the player
-        Vector3 dir = mousePos - player.position;
-        Vector3 targetPos = player.position + Vector3.ClampMagnitude(dir + worldOffset, maxHoverDistance);
-
-        transform.position = targetPos;
-
-        // find the distance for later
-        float dist = Vector3.Distance(player.position, targetPos);
-
-        // point toward the mouse
-        Vector3 lookDir = mousePos - transform.position;
-        float rotZ = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0, 0, rotZ + forwardRotOffset);
-
-        // flip the weapon over if needed
-        // if the weapon is on the outer edge
-        Vector3 scale = transform.localScale;
-
-        // flip the weapon when depending on which side of the player it is on
-        if (player.localScale.x < 0)
+        if (!isAttacking)
         {
-            scale.x = -Mathf.Abs(scale.x);
-            forwardRotOffset = Mathf.Abs(forwardRotOffset);
-        }
-        else if (player.localScale.x > 0)
-        {
-            scale.x = Mathf.Abs(scale.x);
-            forwardRotOffset = -Mathf.Abs(forwardRotOffset);
-        }
+            // get mouse position
+            Vector3 mousePos = cam.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+            mousePos.z = 0f;
 
-        if (dist >= maxHoverDistance * .98)
-        {
-            if (transform.localPosition.x < 0 && player.localScale.x > 0 || transform.localPosition.x > 0 && player.localScale.x < 0)
+            // set the weapon a fixed distance from the player
+            Vector3 dir = (mousePos - player.position).normalized;
+            Vector3 targetPos = player.position + dir * hoverDistance;
+            transform.position = targetPos;
+
+            // set up the direction for the weapon to point
+            Vector3 lookDir = mousePos - player.position;
+            float rotZ = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg;
+
+            // flip the weapon over if needed
+            Vector3 scale = transform.localScale;
+
+            // if the weapon is behind the player, flip it
+            if (transform.localPosition.x < 0)
             {
                 scale.y = -Mathf.Abs(scale.y);
                 forwardRotOffset = Mathf.Abs(forwardRotOffset);
             }
-            else if (transform.localPosition.x > 0 && player.localScale.x > 0 || transform.localPosition.x < 0 && player.localScale.x < 0)
+            else
             {
                 scale.y = Mathf.Abs(scale.y);
                 forwardRotOffset = -Mathf.Abs(forwardRotOffset);
             }
-        }
-        else if (scale.y < 0)
-        {
-            scale.y = Mathf.Abs(scale.y);
-        }
 
-        // set the scale of the weapon object
-        transform.localScale = scale;
+            // adjust the direction based on the direction of the player
+            scale.y *= (player.localScale.x * Mathf.Abs(player.localScale.x)); // the equation forces the result to be either 1 or -1, just in case the player's scale is altered.
+            forwardRotOffset *= (player.localScale.x * Mathf.Abs(player.localScale.x));
+
+            // set the scale of the weapon object as well as the rotation
+            transform.localScale = scale;
+            transform.rotation = Quaternion.Euler(0, 0, rotZ + forwardRotOffset);
+        }
     }
 
-    public void OnAttack()
+    public IEnumerator OnAttack(bool meleeAttack)
     {
+        // make sure this weapon does the correct behavior
+        // either attack or hide depending on with button was pressed
+            //if(meleeAttack && ranged)     // hide
+            //if(meleeAttack && !ranged)    // appear
+            //if(!meleeAttack && ranged)    // appear
+            //if(!meleeAttack && !ranged)   // hide
+        
+        // this statment covers all cases
+        if(meleeAttack == ranged)
+        {
+            // hide the weapon and break
+            this.gameObject.SetActive(false);
+            yield break;
+        }
+        else
+        {
+            // make the object appear and continue on
+            this.gameObject.SetActive(true);
+        }
+
         // do nothing if the weapon is on cooldown
-        if (onCooldown) return;
+        if (onCooldown) yield break;
 
         // if the weapon is a ranged weapon, spawn the associated projectile before continuing
         if (ranged)
         {
-            Instantiate(projectile);
+            // get mouse position
+            Vector3 mousePos = cam.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+            mousePos.z = 0f;
+
+            // set the weapon a fixed distance from the player
+            Vector3 dir = (mousePos - player.position).normalized;
+
+            // set up the direction for the weapon to point
+            Vector3 lookDir = mousePos - player.position;
+            float rotZ = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg;
+
+            GameObject proj = Instantiate(projectile, transform.position, Quaternion.Euler(0, 0, rotZ-90));
+            proj.GetComponent<WeaponProjectileBehavior>().damage = weaponDamage;
+            proj.GetComponent<WeaponProjectileBehavior>().dir = dir;
         }
 
         // play the associated animation, then place the weapon on cooldown for the set amount of time
-        anim.Play();
+        //isAttacking = true;
+        //anim.Play();
+        //while (anim.isPlaying)
+        //{
+        //    yield return null;
+        //}
+        //isAttacking = false;
         onCooldown = true;
         StartCoroutine(Cooldown());
     }
@@ -115,6 +141,8 @@ public class PlayerWeaponBehavior : MonoBehaviour
             onCooldown = false;
             yield break;
         }
+
+        // if this part is reached, then the player does not have the QUICK SHOTS upgrade, so wait for the usual amount of time
         yield return new WaitForSeconds(weaponCooldown);
         onCooldown = false;
     }

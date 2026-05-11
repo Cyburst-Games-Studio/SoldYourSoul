@@ -7,8 +7,7 @@ public class EnemyAISimple : Enemy
 
     new void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        player = GameObject.FindWithTag("Player").transform;
+        base.Start();
         airJump = true;
     }
 

@@ -39,6 +39,11 @@ public class PlayerMoveHandler : MonoBehaviour
         {
             rb.linearVelocityX = dir.x * (PlayerMaster.PM.playerAb.HasAbility("Speedrunner") ? moveSpeed * 1.2f: moveSpeed);
             transform.localScale = new Vector3(dir.x != 0 ? Mathf.Round(dir.x) : transform.localScale.x, 1, 1);
+            GameObject[] childWeapons = GameObject.FindGameObjectsWithTag("PlayerWeapon");
+            foreach (GameObject w in childWeapons)
+            {
+               w.transform.localScale = new Vector3(Mathf.Abs(w.transform.localScale.x) * transform.localScale.x, w.transform.localScale.y, 1);
+            }
         }
     }
 

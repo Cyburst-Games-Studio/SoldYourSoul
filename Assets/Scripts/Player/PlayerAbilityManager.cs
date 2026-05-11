@@ -22,7 +22,7 @@ public class PlayerAbilityManager : MonoBehaviour
     {
         for(int i = 0; i < abilityList.Length; i++)
         {
-            if (abilityList[i].name == string.Empty)
+            if (abilityList[i].abilityName == string.Empty)
             {
                 // add the ability to the list
                 abilityList[i].Set(ab);
@@ -31,7 +31,7 @@ public class PlayerAbilityManager : MonoBehaviour
                 // check if the current upgrade is a weapon object, then instantiate it from resources
                 if (abilityList[i].attribute == 'm' || abilityList[i].attribute == 'r')
                 {
-                    GameObject weapon = Resources.Load<GameObject>("Weapons/" + abilityList[i].name);
+                    GameObject weapon = Resources.Load<GameObject>("Weapons/" + abilityList[i].abilityName);
                     Instantiate(weapon, transform.position, Quaternion.identity, transform);
                 }
 
@@ -48,7 +48,7 @@ public class PlayerAbilityManager : MonoBehaviour
             // check if the current upgrade is a weapon, then remove it 
             if(abilityList[slot].attribute == 'm' || abilityList[slot].attribute == 'r')
             {
-                Destroy(transform.Find(abilityList[slot].name+"(Clone)").gameObject);
+                Destroy(transform.Find(abilityList[slot].abilityName + "(Clone)").gameObject);
             }
 
             // clear out the slot
@@ -65,7 +65,7 @@ public class PlayerAbilityManager : MonoBehaviour
     public void UpdateAbilityDisplay(int index)
     {
         abilitydisplays[index].GetComponent<Image>().sprite = abilityList[index].icon;
-        abilitydisplays[index].GetComponentInChildren<TMP_Text>().text = abilityList[index].name;
+        abilitydisplays[index].GetComponentInChildren<TMP_Text>().text = abilityList[index].abilityName;
     }
     public void PromptToRemoveAbility()
     {
@@ -81,12 +81,26 @@ public class PlayerAbilityManager : MonoBehaviour
         return false;
     }
 
-    public int FindAbility(string name)
+    public int FindAbilityByName(string name)
     {
         for (int i = 0; i < abilityList.Length; i++)
         {
             if (abilityList[i].IsAbility(name)) return i;
         }
         return -1;
+    }
+
+    // finds an upgrade by attribute. Use mostly for finding the name of a weapon object
+    public PlayerAbility GetNameByAttribute(char att)
+    {
+        foreach (PlayerAbility ab in abilityList)
+        {
+            if (ab.attribute == att)
+            {
+                return ab;
+            }
+        }
+
+        return new PlayerAbility();
     }
 }
