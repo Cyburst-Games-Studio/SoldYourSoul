@@ -193,6 +193,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5447648228628404706}
   - component: {fileID: 2635616443423340516}
+  - component: {fileID: 6381209598727230468}
   m_Layer: 0
   m_Name: Beam
   m_TagString: PlayerWeapon
@@ -235,3 +236,19 @@ MonoBehaviour:
   anim: {fileID: 0}
   ranged: 1
   projectile: {fileID: 8604358378044574459, guid: e2bf24f27ba24154f89dd06485da6935, type: 3}
+--- !u!111 &6381209598727230468
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9125516221940161738}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Animation: {fileID: 0}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0

@@ -18,8 +18,7 @@ public class WeaponProjectileBehavior : MonoBehaviour
     [SerializeField] bool       summons;
     [SerializeField] GameObject summonedObject;
 
-
-    [HideInInspector]   
+    [Header("Other Elements")]  
     public int damage;
     [HideInInspector]   
     public Vector2 dir;
@@ -30,6 +29,7 @@ public class WeaponProjectileBehavior : MonoBehaviour
 
     private void Start()
     {
+        if (projectileLifetime == -1) return;
         // gather rigidbody and set the speed
         rb = GetComponent<Rigidbody2D>();
         rb.linearVelocity = dir * movementSpeed;

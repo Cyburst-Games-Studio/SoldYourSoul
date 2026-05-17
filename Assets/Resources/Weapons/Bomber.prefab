@@ -193,6 +193,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1362413499765419422}
   - component: {fileID: 6238157935499045920}
+  - component: {fileID: 2660134145389141384}
   m_Layer: 0
   m_Name: Bomber
   m_TagString: PlayerWeapon
@@ -235,3 +236,19 @@ MonoBehaviour:
   anim: {fileID: 0}
   ranged: 1
   projectile: {fileID: 6955241357812899137, guid: 8872ca50a2f2bff48a5101b4f3e1f50b, type: 3}
+--- !u!111 &2660134145389141384
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5422883927892984662}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Animation: {fileID: 0}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0

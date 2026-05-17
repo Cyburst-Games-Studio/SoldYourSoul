@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6144800076465297400}
   - component: {fileID: 6501723575666475709}
+  - component: {fileID: -8696329310730310047}
   m_Layer: 0
   m_Name: Bolt
   m_TagString: PlayerWeapon
@@ -52,6 +53,22 @@ MonoBehaviour:
   anim: {fileID: 0}
   ranged: 1
   projectile: {fileID: 6428052600235788534, guid: 752e9e56fba761248b37c403472e91dd, type: 3}
+--- !u!111 &-8696329310730310047
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 965825760929930221}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Animation: {fileID: 0}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0
 --- !u!1 &1375696938235350852
 GameObject:
   m_ObjectHideFlags: 0

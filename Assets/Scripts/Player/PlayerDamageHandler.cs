@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using UnityEngine.InputSystem;
 
 public class PlayerDamageHandler : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class PlayerDamageHandler : MonoBehaviour
     [Header("Player Health")]
     public int playerHealth;
     public TMP_Text healthText;
-    [HideInInspector] bool invincible;
+    [HideInInspector] public bool invincible;
 
     private void Start()
     {
@@ -21,7 +22,6 @@ public class PlayerDamageHandler : MonoBehaviour
     {
         playerHealth = hp;
     }
-
 
     // recovers the player's health by a set amount
     public void AddHealth(int amount, bool enemyDefeat)
@@ -37,56 +37,68 @@ public class PlayerDamageHandler : MonoBehaviour
     }
 
     // Handle collisions with enemies
-    private void OnCollisionStay2D(Collision2D collision)
+    private IEnumerator OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.tag.Equals("Enemy"))
+        // early returns
+        // if the collided object is not an enemy or the player is invulnerable, skip damage
+        if (!collision.gameObject.tag.Equals("Enemy")) yield break;
+        if (invincible) yield break;
+
+        // get the damage based off the game's current difficulty
+        int amount = GameMasterHandler.gm.difficulty;
+        invincible = true;
+
+        // reduce the incoming damage if the player has the ARMOR upgrade
+        if (PlayerMaster.PM.playerAb.HasAbility("Armor"))
         {
-            if (!invincible)
-            {
-                int amount = GameMasterHandler.gm.difficulty;
-                invincible = true;
-
-                if (PlayerMaster.PM.playerAb.HasAbility("Armor"))
-                {
-                    amount--;
-                    if (amount < 0) amount = 0;
-                }
-                    
-                playerHealth -= amount;
-
-
-                PlayerMaster.PM.playerMh.Knockback(GameMasterHandler.gm.difficulty);
-                DeathProcedure();
-                UpdateHealthUI();
-                Invoke("UnInvincible", 2.0f);
-            }
+            amount--;
+            if (amount < 0) amount = 0;
         }
+
+        // reduce the player health
+        playerHealth -= amount;
+
+        // apply knockback
+        PlayerMaster.PM.playerMh.Knockback(GameMasterHandler.gm.difficulty);
+        // run the deathprocedure
+        DeathProcedure();
+        // update UI
+        UpdateHealthUI();
+        // return the player to a vulnerable state after x seconds
+        yield return new WaitForSeconds(2.0f);
+        invincible = false;
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private IEnumerator OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.tag.Equals("Enemy"))
+        // early returns
+        // if the collided object is not an enemy or the player is invulnerable, skip damage
+        if (!collision.gameObject.tag.Equals("Enemy")) yield break;
+        if (invincible) yield break;
+
+        // get the damage based off the game's current difficulty
+        int amount = GameMasterHandler.gm.difficulty;
+        invincible = true;
+
+        // reduce the incoming damage if the player has the ARMOR upgrade
+        if (PlayerMaster.PM.playerAb.HasAbility("Armor"))
         {
-            if (!invincible)
-            {
-                int amount = GameMasterHandler.gm.difficulty;
-                invincible = true;
-
-                if (PlayerMaster.PM.playerAb.HasAbility("Armor"))
-                {
-                    amount--;
-                    if (amount < 0) amount = 0;
-                }
-
-                playerHealth -= amount;
-
-
-                PlayerMaster.PM.playerMh.Knockback(GameMasterHandler.gm.difficulty);
-                DeathProcedure();
-                UpdateHealthUI();
-                Invoke("UnInvincible", 2.0f);
-            }
+            amount--;
+            if (amount < 0) amount = 0;
         }
+
+        // reduce the player health
+        playerHealth -= amount;
+
+        // apply knockback
+        PlayerMaster.PM.playerMh.Knockback(GameMasterHandler.gm.difficulty);
+        // run the deathprocedure
+        DeathProcedure();
+        // update UI
+        UpdateHealthUI();
+        // return the player to a vulnerable state after x seconds
+        yield return new WaitForSeconds(2.0f);
+        invincible = false;
     }
 
     public void UpdateHealthUI()
@@ -94,12 +106,7 @@ public class PlayerDamageHandler : MonoBehaviour
         healthText.text = playerHealth.ToString();
     }
 
-    void UnInvincible()
-    {
-        invincible = false;
-    }
-
-    void OnMelee()
+    public void OnMelee()
     {
         PlayerWeaponBehavior[] weapons = GetComponentsInChildren<PlayerWeaponBehavior>(true);
 
@@ -109,7 +116,7 @@ public class PlayerDamageHandler : MonoBehaviour
         }
     }
 
-    void OnRanged()
+    public void OnRanged()
     {
         PlayerWeaponBehavior[] weapons = GetComponentsInChildren<PlayerWeaponBehavior>(true);
 

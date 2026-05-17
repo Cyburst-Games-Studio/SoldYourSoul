@@ -6,12 +6,13 @@ public class PlayerAbilityManager : MonoBehaviour
 {
     public PlayerAbility[] abilityList = new PlayerAbility[5];
     public GameObject[] abilitydisplays = new GameObject[5];
-    [HideInInspector] public int indexToRemove;
-    [HideInInspector] public bool inPrompt;
+    [HideInInspector] public bool promptState;
+    private char attributeConflict;
 
     private void Start()
     {
-        inPrompt = false;
+        promptState = false;
+        attributeConflict = ' ';
         for(int i = 0; i < abilityList.Length; i++)
         {
             abilityList[i] = new PlayerAbility();
@@ -41,35 +42,44 @@ public class PlayerAbilityManager : MonoBehaviour
         return -1;
     }
 
-    public void RemoveAbility(int slot)
+    public void PromptToRemoveAbility(int index)
     {
-        if (inPrompt)
-        {
-            // check if the current upgrade is a weapon, then remove it 
-            if(abilityList[slot].attribute == 'm' || abilityList[slot].attribute == 'r')
-            {
-                Destroy(transform.Find(abilityList[slot].abilityName + "(Clone)").gameObject);
-            }
+        // if the player is not prompted, do nohting
+        if (!promptState) return;
 
-            // clear out the slot
-            abilityList[slot].Clear();
-            inPrompt = false;
-        }
+        // check if the ability matches potential conflict
+        if (!attributeConflict.Equals(' ') && !abilityList[index].attribute.Equals(attributeConflict)) return;
+
+        DestroyAbility(index);
+    }
+
+    public void SetPromptState(bool state)
+    {
+        promptState = state;
+    }
+    public void SetPromptState(bool state, char attributeToFind)
+    {
+        promptState = state;
+        attributeConflict = attributeToFind;
     }
 
     public void DestroyAbility(int index)
     {
+        // check if the current upgrade is a weapon, then remove it 
+        if (abilityList[index].attribute == 'm' || abilityList[index].attribute == 'r')
+        {
+            Destroy(transform.Find(abilityList[index].abilityName + "(Clone)").gameObject);
+        }
+
+        // clear out the slot
         abilityList[index].Clear();
+        SetPromptState(false);
     }
 
     public void UpdateAbilityDisplay(int index)
     {
         abilitydisplays[index].GetComponent<Image>().sprite = abilityList[index].icon;
         abilitydisplays[index].GetComponentInChildren<TMP_Text>().text = abilityList[index].abilityName;
-    }
-    public void PromptToRemoveAbility()
-    {
-        inPrompt = true;
     }
 
     public bool HasAbility(string name)
@@ -89,18 +99,9 @@ public class PlayerAbilityManager : MonoBehaviour
         }
         return -1;
     }
-
-    // finds an upgrade by attribute. Use mostly for finding the name of a weapon object
-    public PlayerAbility GetNameByAttribute(char att)
+    
+    void OnSpecial1()
     {
-        foreach (PlayerAbility ab in abilityList)
-        {
-            if (ab.attribute == att)
-            {
-                return ab;
-            }
-        }
-
-        return new PlayerAbility();
+        StartCoroutine(PlayerMaster.PM.playerMh.Phase());
     }
 }

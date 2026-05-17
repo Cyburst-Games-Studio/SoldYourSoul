@@ -102,6 +102,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3002456169072090596}
   - component: {fileID: 6286831468725220968}
+  - component: {fileID: 2503516235480688145}
   m_Layer: 0
   m_Name: Spew
   m_TagString: PlayerWeapon
@@ -140,10 +141,26 @@ MonoBehaviour:
   hoverDistance: 1
   forwardRotOffset: 0
   weaponDamage: 4
-  weaponCooldown: 0.3
+  weaponCooldown: 0.1
   anim: {fileID: 0}
   ranged: 1
   projectile: {fileID: 6384332732438872112, guid: 36d59976cc539c848af3bef527da4d2b, type: 3}
+--- !u!111 &2503516235480688145
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6385424530062257672}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Animation: {fileID: 0}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0
 --- !u!1 &8477877481483356431
 GameObject:
   m_ObjectHideFlags: 0

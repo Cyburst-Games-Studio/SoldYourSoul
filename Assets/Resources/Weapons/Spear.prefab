@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5243432938650119276}
   - component: {fileID: 8835049724871779493}
+  - component: {fileID: 6080538609509146224}
+  - component: {fileID: 3066164812847639699}
   m_Layer: 0
   m_Name: Spear
   m_TagString: PlayerWeapon
@@ -49,10 +51,54 @@ MonoBehaviour:
   hoverDistance: 1.4
   forwardRotOffset: 90
   weaponDamage: 14
-  weaponCooldown: 1.6
+  weaponCooldown: 1
   anim: {fileID: 0}
   ranged: 0
   projectile: {fileID: 0}
+--- !u!111 &6080538609509146224
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3259216401259024869}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Animation: {fileID: 7400000, guid: 24deff79636252d47ba1b08b9fe74000, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 24deff79636252d47ba1b08b9fe74000, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0
+--- !u!50 &3066164812847639699
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3259216401259024869}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &5240033233266654587
 GameObject:
   m_ObjectHideFlags: 0
@@ -63,7 +109,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4684854222016060290}
   - component: {fileID: 7331978847476768844}
-  - component: {fileID: 2548215506811874776}
+  - component: {fileID: 6300996840759224141}
   m_Layer: 0
   m_Name: Square
   m_TagString: PlayerDamage
@@ -136,7 +182,7 @@ SpriteRenderer:
   m_SortingOrder: 5
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.42138356, g: 0.42138356, b: 0.42138356, a: 1}
+  m_Color: {r: 0.36477977, g: 0.22526328, b: 0.08144451, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -145,14 +191,14 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!61 &2548215506811874776
+--- !u!61 &6300996840759224141
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5240033233266654587}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
@@ -201,7 +247,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5728858692406619129}
   - component: {fileID: 5025880346487807272}
-  - component: {fileID: 3478592920308325538}
+  - component: {fileID: 616438257854979029}
   m_Layer: 0
   m_Name: Triangle
   m_TagString: PlayerDamage
@@ -274,7 +320,7 @@ SpriteRenderer:
   m_SortingOrder: 6
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
-  m_Color: {r: 0.7484276, g: 0.38362795, b: 0.38362795, a: 1}
+  m_Color: {r: 0.49056602, g: 0.3563545, b: 0.3563545, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -283,14 +329,14 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!60 &3478592920308325538
+--- !u!60 &616438257854979029
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5483428975675079098}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}

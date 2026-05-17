@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 780bce45a37ccfb45a6869d96a27cde6, type: 3}
-  m_Name: Dash
+  m_Name: Charge
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAbilityScriptableObject
   playerAbility:
-    abilityName: Dash
-    description: Double tap a direction to gain a burst of speed, damaging enemies
-      in your path.
-    attribute: 112
-    rarity: 16
-    cost: 7
-    icon: {fileID: 21300000, guid: 76295243b95fd6f4189089d0a1283e1f, type: 3}
+    abilityName: Charge
+    description: Press a special button to charge forward, dealing small damage to
+      enemies in front of you.
+    attribute: 97
+    rarity: 12
+    cost: 9
+    icon: {fileID: -1106620176, guid: 1e16a5ce2dcb3944e8458dbbfe8d60c9, type: 3}

@@ -38,19 +38,22 @@ public class Enemy : MonoBehaviour
 
         // at this point, the collided target is a player damage source and this object is subject to take damage
         int damage = 0;
+
         // get the reference of the opposing object's Weapon/Projectile script
-        if (collision.TryGetComponent<PlayerWeaponBehavior>(out PlayerWeaponBehavior weapon))
+        if(collision.TryGetComponent<WeaponProjectileBehavior>(out WeaponProjectileBehavior proj))
         {
-            damage = weapon.weaponDamage;
-            // check if the weapon is a melee weapon to apply the effect of Strength upgrade
-            if (!weapon.ranged && PlayerMaster.PM.playerAb.HasAbility("Strength"))
-            {
-                damage = Mathf.RoundToInt(damage * 1.2f);
-            }
+            damage = proj.damage;
         }
         else
         {
-            damage = collision.GetComponent<WeaponProjectileBehavior>().damage;
+            collision.transform.parent.TryGetComponent(out PlayerWeaponBehavior weapon);
+
+            damage = weapon.weaponDamage;
+            // check for the Strength upgrade to increase damage taken by enemy
+            if (PlayerMaster.PM.playerAb.HasAbility("Strength"))
+            {
+                damage = Mathf.RoundToInt(damage * 1.2f);
+            }
         }
 
         // apply damage to the enemy

@@ -24,11 +24,13 @@ public class ShopHandler : MonoBehaviour
     private string[] StaticAbilities;
 
     int activeChoice = -1;
+    Coroutine shopRoutine;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         activeChoice = -1;
+        shopRoutine = null;
 
         gameObject.GetComponentInChildren<Canvas>().worldCamera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
 
@@ -99,10 +101,14 @@ public class ShopHandler : MonoBehaviour
     // all situations
     public void PurchaseAbility()
     {
-        StartCoroutine(PurchaseAbilityPayLoad());  
+        // stop current routine if present
+        if (shopRoutine != null) StopCoroutine(shopRoutine);
+
+        // run the shop routine
+        shopRoutine = StartCoroutine(PurchaseAbilityRoutine());  
     }
 
-    IEnumerator PurchaseAbilityPayLoad()
+    IEnumerator PurchaseAbilityRoutine()
     {
         // check if a choice is selected in the shop
         if (activeChoice < 0)
@@ -127,6 +133,36 @@ public class ShopHandler : MonoBehaviour
             }
         }
 
+        // check if the player has a conflicting upgrade
+        // the player can only have 1 melee weapon, 1 ranged weapon, and 2 specials at a time
+        if (abilitiesForSale[activeChoice].attribute.Equals('m') || abilitiesForSale[activeChoice].attribute.Equals('r'))
+        {
+            foreach (PlayerAbility ab in PlayerMaster.PM.playerAb.abilityList)
+            {
+                // if the attribute of the selected upgrade for sale
+                if (ab.attribute.Equals(abilitiesForSale[activeChoice].attribute))
+                {
+                    // prompt the player to remove the conflicting upgrade
+                    shopInfoName.text = "Conflict detected!";
+                    shopInfoText.text = ab.abilityName + " conflicts with the selected upgrade, please remove";
+                    shopInfoIcon.color = Color.clear;
+
+                    PlayerMaster.PM.playerAb.SetPromptState(true, ab.attribute);
+
+                    while (PlayerMaster.PM.playerAb.promptState)
+                    {
+                        yield return null;
+                    }
+
+                    // finally, add the ability
+                    PlayerMaster.PM.playerAb.AddAbility(abilitiesForSale[activeChoice]);
+                    CompletePurchase();
+
+                    yield break;
+                }
+            }
+        }
+        
         // find an open slot to place the ability
         // if no such slot exists, prompt the player to delete an existing ability
         if (PlayerMaster.PM.playerAb.AddAbility(abilitiesForSale[activeChoice]) == -1)
@@ -135,16 +171,23 @@ public class ShopHandler : MonoBehaviour
             shopInfoName.text = "You have too many upgrades";
             shopInfoText.text = "Please select one to discard";
             shopInfoIcon.color = Color.clear;
-            PlayerMaster.PM.playerAb.inPrompt = true;
+            PlayerMaster.PM.playerAb.SetPromptState(true);
 
-            while (PlayerMaster.PM.playerAb.inPrompt)
+            while (PlayerMaster.PM.playerAb.promptState)
             {
                 yield return null;
             }
 
-            // re-add the ability
+            // finally, add the ability
             PlayerMaster.PM.playerAb.AddAbility(abilitiesForSale[activeChoice]);
         }
+        // complete the transaction
+        CompletePurchase();
+
+    }
+
+    void CompletePurchase()
+    {
         // complete the transaction
         PlayerMaster.PM.playerDh.playerHealth -= abilitiesForSale[activeChoice].cost;
         PlayerMaster.PM.playerDh.UpdateHealthUI();
@@ -152,7 +195,7 @@ public class ShopHandler : MonoBehaviour
         shopInfoName.text = string.Empty;
         shopInfoText.text = "Thank you for your purchase\n\n";
         shopInfoIcon.color = Color.clear;
-
+        shopRoutine = null;
     }
 
     // handles opening and closing the shop menu when the player gets close
@@ -170,9 +213,13 @@ public class ShopHandler : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
+            activeChoice = -1;
             shopCanvas.SetActive(false);
-            StopCoroutine(PurchaseAbilityPayLoad());
-            PlayerMaster.PM.playerAb.inPrompt = false;
+
+            if(shopRoutine != null) StopCoroutine(shopRoutine);
+            shopRoutine = null;
+
+            PlayerMaster.PM.playerAb.SetPromptState(false);
         }
     }
 }

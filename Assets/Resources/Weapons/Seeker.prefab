@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3390617906833480317}
   - component: {fileID: 880423993024590275}
+  - component: {fileID: -6710781529948880735}
   m_Layer: 0
   m_Name: Seeker
   m_TagString: PlayerWeapon
@@ -52,6 +53,22 @@ MonoBehaviour:
   anim: {fileID: 0}
   ranged: 1
   projectile: {fileID: 6833658330730547838, guid: 501a8e39f02cc4d4588c1f67203c3b44, type: 3}
+--- !u!111 &-6710781529948880735
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2226576907235781315}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Animation: {fileID: 0}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0
 --- !u!1 &4292993075629282248
 GameObject:
   m_ObjectHideFlags: 0

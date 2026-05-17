@@ -24,10 +24,14 @@ public class PlayerWeaponBehavior : MonoBehaviour
     public bool ranged;
     public GameObject projectile;
 
-    private void Start()
+    private void Awake()
     {
+        anim = gameObject.GetComponent<Animation>();
         player = GameObject.FindWithTag("Player").transform;
         cam = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
+    }
+    void Start()
+    {
         onCooldown = false;
         isAttacking = false;
 
@@ -121,19 +125,15 @@ public class PlayerWeaponBehavior : MonoBehaviour
         }
 
         // play the associated animation, then place the weapon on cooldown for the set amount of time
-        //isAttacking = true;
-        //anim.Play();
-        //while (anim.isPlaying)
-        //{
-        //    yield return null;
-        //}
-        //isAttacking = false;
+        isAttacking = true;
+        if(anim != null) anim.Play();
+        while (anim != null && anim.isPlaying)
+        {
+            yield return null;
+        }
+        isAttacking = false;
         onCooldown = true;
-        StartCoroutine(Cooldown());
-    }
 
-    IEnumerator Cooldown()
-    {
         // check for ranged weapon and for the QUICK SHOTS upgrade to reduce the length of the cooldown
         if (ranged && PlayerMaster.PM.playerAb.HasAbility("Quick Shots"))
         {
@@ -145,5 +145,20 @@ public class PlayerWeaponBehavior : MonoBehaviour
         // if this part is reached, then the player does not have the QUICK SHOTS upgrade, so wait for the usual amount of time
         yield return new WaitForSeconds(weaponCooldown);
         onCooldown = false;
+    }
+
+    void OnEnable()
+    {
+        StartCoroutine(Enable());
+    }
+
+    IEnumerator Enable()
+    {
+        if (anim != null)
+        {
+            anim.Play();
+            yield return new WaitForEndOfFrame();
+            anim.Stop();
+        }
     }
 }
